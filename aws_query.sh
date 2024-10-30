@@ -125,7 +125,7 @@ aws ce get-cost-and-usage \
   --query 'ResultsByTime[0].Groups[*].[Keys[0],Metrics.AmortizedCost.Amount]' \
   --output text > billing_report_accounts.txt
 # Convert to CSV Format
-echo "Account ID, Billing Amount" > billing_report_accounts.csv
+echo "account, cost" > billing_report_accounts.csv
 cat billing_report_accounts.txt | tr -s '\t' ',' >> billing_report_accounts.csv
 
 # Get tag keys
@@ -142,6 +142,6 @@ for TAG_KEY in $(cat tag_keys.txt); do
     --group-by Type=TAG,Key=$TAG_KEY \
     --query 'ResultsByTime[0].Groups[*].[Keys[0],Metrics.AmortizedCost.Amount]' \
     --output text > billing_report_$TAG_KEY.txt
-  echo "Tag, Billing Amount" > billing_report_$TAG_KEY.csv
+  echo "region, cost" > billing_report_$TAG_KEY.csv
   cat billing_report_$TAG_KEY.txt | tr -s '\t' ',' >> billing_report_$TAG_KEY.csv
 done
